@@ -1,39 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1770686939171,
+  "lastUpdate": 1771550305258,
   "repoUrl": "https://github.com/czlonkowski/n8n-mcp",
   "entries": {
     "n8n-mcp Benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "56956555+czlonkowski@users.noreply.github.com",
-            "name": "Romuald Członkowski",
-            "username": "czlonkowski"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "33690c5650e680b2c9cfbae75cac81a761742389",
-          "message": "feat: rename n8n_trigger_webhook_workflow to n8n_test_workflow with multi-trigger support (#460)\n\n* feat: rename n8n_trigger_webhook_workflow to n8n_test_workflow with multi-trigger support\n\n- Rename tool from n8n_trigger_webhook_workflow to n8n_test_workflow\n- Add support for webhook, form, and chat triggers (auto-detection)\n- Implement modular trigger system with registry pattern\n- Add trigger detector for automatic trigger type inference\n- Remove execute trigger type (n8n public API limitation)\n- Add comprehensive tests for trigger detection and handlers\n\nThe tool now auto-detects trigger type from workflow structure and\nsupports all externally-triggerable workflows via n8n's public API.\n\nNote: Direct workflow execution (Schedule/Manual triggers) requires\nn8n's instance-level MCP access, not available via REST API.\n\nConceived by Romuald Członkowski - https://www.aiadvisors.pl/en\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n* fix: add SSRF protection to webhook handler and update tests\n\n- Add SSRF URL validation to webhook-handler.ts (critical security fix)\n  Aligns with existing SSRF protection in form-handler.ts and chat-handler.ts\n- Update parameter-validation.test.ts to use new n8n_test_workflow tool name\n\nConceived by Romuald Członkowski - www.aiadvisors.pl/en\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n* feat: n8n_test_workflow unified trigger tool (v2.28.0)\n\nAdded new `n8n_test_workflow` tool replacing `n8n_trigger_webhook_workflow`:\n\nFeatures:\n- Auto-detects trigger type (webhook/form/chat) from workflow\n- Supports multiple trigger types with type-specific parameters\n- SSRF protection for all trigger handlers\n- Extensible handler architecture with registry pattern\n\nChanges:\n- Fixed Zod schema to remove invalid 'execute' trigger type\n- Updated README.md tool documentation\n- Added CHANGELOG entry for v2.28.0\n- Bumped version to 2.28.0\n\nConceived by Romuald Członkowski - www.aiadvisors.pl/en\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n* test: add comprehensive unit tests for trigger handlers\n\nAdded 87 unit tests across 4 test files to improve code coverage:\n\n- base-handler.test.ts (19 tests) - 100% coverage\n- webhook-handler.test.ts (22 tests) - 100% coverage\n- chat-handler.test.ts (23 tests) - 100% coverage\n- form-handler.test.ts (23 tests) - 100% coverage\n\nTests cover:\n- Input validation and parameter handling\n- SSRF protection integration\n- HTTP method handling and URL building\n- Error response formatting\n- Execution paths for all trigger types\n\nConceived by Romuald Członkowski - www.aiadvisors.pl/en\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
-          "timestamp": "2025-12-01T15:55:14+01:00",
-          "tree_id": "697e26aaef8badfb98fdaf88b436acabc949de93",
-          "url": "https://github.com/czlonkowski/n8n-mcp/commit/33690c5650e680b2c9cfbae75cac81a761742389"
-        },
-        "date": 1764601040167,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "sample - array sorting - small",
-            "value": 0.0136,
-            "range": "0.3096",
-            "unit": "ms",
-            "extra": "73341 ops/sec"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -1530,6 +1499,37 @@ window.BENCHMARK_DATA = {
           "url": "https://github.com/czlonkowski/n8n-mcp/commit/6f695be48205831f4dcccf73c3d60cced196b77c"
         },
         "date": 1770686938866,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "sample - array sorting - small",
+            "value": 0.0136,
+            "range": "0.3096",
+            "unit": "ms",
+            "extra": "73341 ops/sec"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "56956555+czlonkowski@users.noreply.github.com",
+            "name": "Romuald Członkowski",
+            "username": "czlonkowski"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "77048347b3a82421ffa0b8b6bd44f8f50dd8cf52",
+          "message": "chore: update n8n to 2.8.3 (#603)\n\n* chore: update n8n to 2.8.3 and bump version to 2.35.3\n\n- Updated n8n from 2.6.3 to 2.8.3\n- Updated n8n-core from 2.6.1 to 2.8.1\n- Updated n8n-workflow from 2.6.0 to 2.8.0\n- Updated @n8n/n8n-nodes-langchain from 2.6.2 to 2.8.1\n- Fixed node loader to bypass restricted package.json exports in\n  @n8n/n8n-nodes-langchain >=2.9.0 (resolves via absolute paths)\n- Fixed community doc generator for cloud LLMs: added API key env var\n  support, switched to max_completion_tokens, auto-omit temperature\n- Rebuilt node database with 1,236 nodes (673 n8n-nodes-base,\n  133 @n8n/n8n-nodes-langchain, 430 community)\n- Refreshed community nodes (361 verified + 69 npm) with 424 AI summaries\n- Updated README badge with new n8n version and node counts\n- Updated CHANGELOG with dependency changes\n\nConceived by Romuald Członkowski - https://www.aiadvisors.pl/en\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\n\n* fix: update documentation-generator tests for max_completion_tokens\n\n- Updated test assertions from max_tokens to max_completion_tokens\n- Updated testConnection token limit expectation from 10 to 200\n- Added temperature to test config to match new configurable behavior\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: Claude Opus 4.6 <noreply@anthropic.com>",
+          "timestamp": "2026-02-20T02:15:15+01:00",
+          "tree_id": "3fd6bf33adf702cee779dffe9196bb2155947f22",
+          "url": "https://github.com/czlonkowski/n8n-mcp/commit/77048347b3a82421ffa0b8b6bd44f8f50dd8cf52"
+        },
+        "date": 1771550304557,
         "tool": "customSmallerIsBetter",
         "benches": [
           {
