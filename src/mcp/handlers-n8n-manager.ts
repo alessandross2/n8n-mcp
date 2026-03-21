@@ -2861,10 +2861,11 @@ export async function handleGetRows(args: unknown, context?: InstanceContext): P
     const { tableId, filter, sortBy, ...params } = getRowsSchema.parse(args);
     const queryParams: Record<string, unknown> = { ...params };
     if (filter) {
-      queryParams.filter = typeof filter === 'string' ? filter : JSON.stringify(filter);
+      const filterStr = typeof filter === 'string' ? filter : JSON.stringify(filter);
+      queryParams.filter = encodeURIComponent(filterStr);
     }
     if (sortBy) {
-      queryParams.sortBy = sortBy;
+      queryParams.sortBy = encodeURIComponent(sortBy);
     }
     const result = await client.getDataTableRows(tableId, queryParams as any);
     return {
@@ -2930,7 +2931,7 @@ export async function handleDeleteRows(args: unknown, context?: InstanceContext)
     const client = ensureApiConfigured(context);
     const { tableId, filter, ...params } = deleteRowsSchema.parse(args);
     const queryParams = {
-      filter: JSON.stringify(filter),
+      filter: encodeURIComponent(JSON.stringify(filter)),
       ...params,
     };
     const result = await client.deleteDataTableRows(tableId, queryParams as any);
