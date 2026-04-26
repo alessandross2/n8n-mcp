@@ -1,0 +1,95 @@
+{
+  "name": "Video Transcription with Whisper",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "const fs = require('fs');\nconst path = require('path');\nconst videoDir = 'C:/videos';\n\nconst videoFiles = fs.readdirSync(videoDir)\n  .filter(file => /\\.(mp4|mov|avi|mkv)$/i.test(file))\n  .map(file => ({\n    filename: file,\n    fullPath: path.join(videoDir, file)\n  }));\n\nreturn videoFiles.map(file => ({ json: file }));"
+      },
+      "name": "List Videos",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "loopProperty": "[object Object]"
+      },
+      "name": "Loop Over Videos",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 1,
+      "position": [650, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "const { execSync } = require('child_process');\nconst path = require('path');\n\nconst videoPath = $json.fullPath;\nconst videoDir = path.dirname(videoPath);\nconst videoName = path.basename(videoPath, path.extname(videoPath));\n\ntry {\n  const command = `whisper \"${videoPath}\" --output_format txt --output_dir \"${videoDir}\"`;\n  execSync(command, { stdio: 'pipe' });\n  \n  return [{\n    json: {\n      status: 'success',\n      videoFile: $json.filename,\n      transcriptionFile: `${videoName}.txt`,\n      outputPath: path.join(videoDir, `${videoName}.txt`)\n    }\n  }];\n} catch (error) {\n  return [{\n    json: {\n      status: 'error',\n      videoFile: $json.filename,\n      error: error.message\n    }\n  }];\n}"
+      },
+      "name": "Transcribe with Whisper",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [850, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "return [{json: {completed: true, status: $json}}];"
+      },
+      "name": "Result Summary",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [1050, 300]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "List Videos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List Videos": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Videos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Videos": {
+      "main": [
+        [
+          {
+            "node": "Transcribe with Whisper",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcribe with Whisper": {
+      "main": [
+        [
+          {
+            "node": "Result Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
